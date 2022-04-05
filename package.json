@@ -1,0 +1,23 @@
+{
+  "name": "cyber_genie_nft",
+  "version": "1.0.0",
+  "description": "The Cyber Genie NFT tools.",
+  "main": "index.js",
+  "bin": "index.js",
+  "pkg": {
+    "assets": [
+      "layers/**/*",
+      "node_modules/**/*",
+      "src/**/*"
+    ]
+  },
+  "scripts": {
+    "rarity": "node rarity.js"
+  },
+  "author": "B.Z",
+  "dependencies": {
+    "canvas": "^2.8.0",
+    "gif-encoder-2": "^1.0.5",
+    "sha1": "^1.1.1"
+  }
+}
