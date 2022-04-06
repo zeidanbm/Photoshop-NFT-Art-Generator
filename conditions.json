@@ -1,0 +1,17 @@
+{
+  "bg-red": {
+    "eye": [ "eye-yellow", "eye-red" ],
+    "Bottom lid": [ "b-Low" ]
+  },
+  "b-low": {
+    "Background": [ "bg-red", "bg-black" ]
+  },
+  "eye-yellow": {
+    "Background": [ "bg-red" ],
+    "Iris": [ "Small" ]
+  },
+  "eye-red": {
+    "Background": [ "bg-red" ],
+    "Iris": [ "Medium", "Large" ]
+  }
+}
