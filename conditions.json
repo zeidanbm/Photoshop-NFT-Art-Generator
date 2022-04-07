@@ -1,17 +1,15 @@
 {
-  "bg-red": {
-    "eye": [ "eye-yellow", "eye-red" ],
-    "Bottom lid": [ "b-Low" ]
+  "T-Low": {
+    "Background": [ "Bg-Red" ],
+    "Eye Color": [ "Eye-Pink", "Eye-Green"]
   },
-  "b-low": {
-    "Background": [ "bg-red", "bg-black" ]
+  "Eye-Pink": {
+    "Top lid": ["T-Low"]
   },
-  "eye-yellow": {
-    "Background": [ "bg-red" ],
-    "Iris": [ "Small" ]
+  "Eye-Green": {
+    "Top lid": ["T-Low"]
   },
-  "eye-red": {
-    "Background": [ "bg-red" ],
-    "Iris": [ "Medium", "Large" ]
+  "Bg-Red": {
+    "Top lid": ["T-Low"]
   }
 }
