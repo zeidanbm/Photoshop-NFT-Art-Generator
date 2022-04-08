@@ -245,8 +245,8 @@ function main() {
         saveMetadata(obj);
         resetLayersOptimized(groups, selectedLayerMap);
     }
-    alert("Generation process is complete.");
     var timer = (new Date() - start) / 1000;
+    alert("Generation process is complete.");
     alert(timer + " seconds");
 }
 
