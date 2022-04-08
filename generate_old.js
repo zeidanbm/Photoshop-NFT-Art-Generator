@@ -59,11 +59,14 @@ function main() {
       }
 
       var ran = Math.floor(Math.random() * totalWeight);
+      var total = 0;
 
       (function() {
         for(var j = 0; j < groups[i].layers.length; j++){
-          ran -= layerMap[j].weight;
-          if(ran < 0) {
+          // ran -= layerMap[j].weight;
+          total += layerMap[j].weight;
+          // if(ran < 0) {
+            if(total >= ran) {
             groups[i].layers[j].visible = true;
             obj.attributes.push({
               trait_type: groups[i].name, 

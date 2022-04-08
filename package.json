@@ -1,23 +1,27 @@
 {
-  "name": "cyber_genie_nft",
-  "version": "1.0.0",
-  "description": "The Cyber Genie NFT tools.",
-  "main": "index.js",
-  "bin": "index.js",
+  "name": "cyber_genie_nft_generator",
+  "version": "1.0.1",
+  "description": "The Cyber Genie NFT generator tools.",
+  "type": "module",
   "pkg": {
     "assets": [
-      "layers/**/*",
-      "node_modules/**/*",
-      "src/**/*"
+      "node_modules/**/*"
     ]
   },
   "scripts": {
-    "rarity": "node rarity.js"
+    "rarity-check": "node rarity.js",
+    "dna-check": "node dna-check.js",
+    "condition-check": "node condition-check.js"
   },
   "author": "B.Z",
   "dependencies": {
+    "boxen": "^6.2.1",
     "canvas": "^2.8.0",
+    "chalk": "^4.1.2",
     "gif-encoder-2": "^1.0.5",
-    "sha1": "^1.1.1"
+    "lodash.isempty": "^4.4.0",
+    "prompts": "^2.4.2",
+    "sha1": "^1.1.1",
+    "yargs": "^17.4.0"
   }
 }

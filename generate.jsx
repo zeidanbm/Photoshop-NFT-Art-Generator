@@ -19,7 +19,7 @@ function main() {
 
     var description = prompt("What is the description for your collection?", "");
 
-    var hasDNA = prompt("Do you want to use DNA to make sure generated NFTs are unique? (1=>yes, 0=>no)", "1");
+    var hasDNA = prompt("Do you want to use a DNA to make sure generated NFTs are unique? (1=>yes, 0=>no)", "1");
 
     alert(
         supply +
@@ -58,7 +58,7 @@ function main() {
             }
         }
         
-        return common; // Return the common items
+        return (common.length) ? common : false; // Return the common items
     }
 
     /**
@@ -90,7 +90,7 @@ function main() {
         return JSON.parse(str);
     }
 
-    // var conditions = parseConditions('conditions.json');
+    var CONDITIONS = parseConditions('conditions.json');
 
     /**
     * Get layer weight
@@ -101,42 +101,40 @@ function main() {
     }
 
    /**
-   * udpate stacked layer conditions, returns false if conditions fail
+   * udpate stacked layer rules, returns false if conditions fail
    * @param {string} _layerName
-   * @param {obj} _stackedConditions
+   * @param {string} _layerGroup
+   * @param {obj} _stackedRules
    */
-    function updateLayerConditions(_layerName, _layerGroup, _stackedConditions) { 
-        //Eye-Yellow, Top-Lid, {}
-        var layerConditions = conditions[_layerName];
+    function updateRules(_layerName, _layerGroup, _stackedRules) { 
+        var layerRules = CONDITIONS[_layerName];
 
-        // layerConditions =  {
-        //     "Background": [ "Bg-Red" ],
-        //     "Eye Color": [ "Eye-Green", "Eye-Pink" ]
-        //   }
-
-        if (!layerConditions) {
-            if(_stackedConditions[_layerGroup] && !checkIfContains(_stackedConditions[_layerGroup], _layerName)) {
-                return false;
-            }
-            return _stackedConditions;
+        // check the selected layer against the stacked rules
+        if(_stackedRules[_layerGroup] && !checkIfContains(_stackedRules[_layerGroup], _layerName)) {
+            return false;
         }
 
-        for (var i = 0; i < groups.length; i++) {
-            var _groupName = cleanName(groups[i].name);
-            if(!layerConditions[_groupName]) {
+        if (!layerRules) {      
+            return _stackedRules;
+        }
+        
+        for(var i = 0; i < layerRules.length; i++) {
+            var _groupName = layerRules[i].group;
+
+            // logData(JSON.stringify({"_layerRules": layerRules, "groupName": _groupName }), 'cond-' + i);    
+            // if we don't have any rules for the selected group then store them in the _stackedRules
+             if(!_stackedRules[_groupName]) {
+                _stackedRules[_groupName] = layerRules[i].layers;
                 continue;
             }
-            if(!_stackedConditions[_groupName] || _stackedConditions[_groupName].length <= 0) {
-                _stackedConditions[_groupName] = layerConditions[_groupName];
-            } else {
-                var common = getCommonItems(layerConditions[_groupName], _stackedConditions[_groupName]);
-                if(!common || common.length <= 0) {
-                    return false;
-                }
-                _stackedConditions[_groupName] = common;
-            }
+            // check if we have common layers
+            var common = getCommonItems(layerRules[i].layers, _stackedRules[_groupName]);
+             if(!common) {
+                return false;
+             }
+             _stackedRules[_groupName] = common;
         }
-        return _stackedConditions;
+        return _stackedRules;
     }
 
     /**
@@ -145,6 +143,42 @@ function main() {
     */
     function cleanName(_str) {
         return _str.split("#").shift();
+    }
+
+    function pickLayerByWeight(groupIndx, totalWeight, groupName, stackedRules) {
+        // pick a random number between 0 and totalWeight (normal distribution)
+        // logData(JSON.stringify({rules: stackedRules, totalWeight: totalWeight, groupName: groupName}), groupIndx);
+        var threshold = Math.floor(Math.random() * totalWeight);
+        var breakCheck1 = false;
+        var total = 0;
+        // loop over layers in current group to pick one layer based on the random value
+        for (var j = 0; j < groups[groupIndx].layers.length; j++) {
+            var layerName = cleanName(groups[groupIndx].layers[j].name);
+            var layerWeight = getRWeights(groups[groupIndx].layers[j].name) || 1;
+            // Add the weight to our running total.
+            total += layerWeight;
+            // If this value falls within the threshold, we're done!
+            if (total >= threshold) {
+                // check layer rules     
+                var rules = updateRules(layerName, groupName, stackedRules);
+                // // if conditions fail
+                if (!rules) {
+                    if((j+1) === groups[groupIndx].layers.length) {
+                        breakCheck1 = true;
+                        break;
+                    }
+                    continue;
+                }
+                groups[groupIndx].layers[j].visible = true;
+                // logData(JSON.stringify({rules: rules, stackedRules: stackedRules, layerName: layerName, groupName: groupName}), groupIndx);
+                
+                return { index: j, layerName: layerName, rules: rules };
+            }
+        }
+        // re-run the function if conditions failed and no layer was selected
+        if(breakCheck1) {
+            return pickLayerByWeight(groupIndx, totalWeight, groupName, stackedRules);
+        }
     }
 
     var dna = {};
@@ -158,80 +192,27 @@ function main() {
         obj.attributes = [];
         var hashTable = {};
         var selectedLayerMap = {};
-        // var stackedConditions = {};
-        // var breakCheck1 = false;
+        var stackedRules = {};
         // loop over all groups
         for (var i = 0; i < groups.length; i++) {
-            // if (breakCheck1) {
-            //     break;
-            // }
             var totalWeight = getRWeights(groups[i].name) || groups[i].layers.length;
             var groupName = cleanName(groups[i].name);
-            // var layerMap = [];
-            // loop over layers in current group and build the layerMap array with the corresponding weights
-            // for (var j = 0; j < groups[i].layers.length; j++) {
-            //     var layerName = cleanName(groups[i].layers[j].name);
-            //     // check if there are any conditions for the current layer based on the already selected groups and layers stored in the hashTable
-            //     if (!checkLayerConditions(layerName, selectedGroups, hashTable)) {
-            //         continue;
-            //     }
 
-            //     var weight = getRWeights(groups[i].layers[j].name);
-            //     totalWeight += weight;
-
-            //     layerMap.push({
-            //         index: j,
-            //         name: layerName,
-            //         weight: weight
-            //     });
-            // }
-
-            // pick a random number between 0 and totalWeight (normal distribution)
-            var ran = Math.floor(Math.random() * totalWeight);
-
-            (function () {
-                var groupLen = groups[i].layers.length;
-                // loop over layers in current group to pick one layer based on the random value
-                // Top-Lid => T-Low#20, T-Medium#30, T-Large#50  
-                for (var j = 0; j < groupLen; j++) {
-                    var layerName = cleanName(groups[i].layers[j].name);
-                    var layerWeight = getRWeights(groups[i].layers[j].name) || 1;
-                    // find to which existing weight the random value correspond to 
-                    ran -= layerWeight;
-                    // check conditions
-                    //T-Low, Top-Lid, {}
-                    // var newConditions = updateLayerConditions(layerName, groupName, stackedConditions);
-                    // logData(newConditions, j);
-                    // // if conditions fail
-                    // if (!newConditions) {
-                    //     if((j+1) === groupLen) {
-                    //         breakCheck1 = true;
-                    //         break;
-                    //     }
-                    //     continue;
-                    // }
-                    // stackedConditions = newConditions;
-
-                    if (ran < 0) {
-                        // store selected groups and layers for current image, to be used in checking conditions for next selected layer
-                        hashTable[groupName] = layerName;
-                        selectedLayerMap[i] = j;
-
-                        groups[i].layers[j].visible = true;
-                        obj.attributes.push({
-                            trait_type: groupName,
-                            value: layerName
-                        })
-                        return;
-                    }
-                }
-            })();
+            var resutls = pickLayerByWeight(i, totalWeight, groupName, stackedRules);
+            // store selected groups and layers for current image, to be used in checking conditions for next selected layer
+            stackedRules = resutls.rules
+            hashTable[groupName] = resutls.layerName;
+            selectedLayerMap[i] = resutls.index;
+            obj.attributes.push({
+                trait_type: groupName,
+                value: resutls.layerName
+            })
         }
         // get image DNA
         if(parseInt(hasDNA)) {
             var hash = hashCode(JSON.stringify(hashTable));
             // check if dna exits, skip if true and store value if false
-            if (hash && dna[hash]) {
+            if (dna[hash]) {
                 if(h >= 1) {
                     h--;
                 }
@@ -245,8 +226,8 @@ function main() {
         saveMetadata(obj);
         resetLayersOptimized(groups, selectedLayerMap);
     }
-    alert("Generation process is complete.");
     var timer = (new Date() - start) / 1000;
+    alert("Generation process is complete.");
     alert(timer + " seconds");
 }
 

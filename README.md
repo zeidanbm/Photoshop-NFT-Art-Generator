@@ -1,7 +1,20 @@
-# Photoshop Script
+# NFT Generator - Photoshop Script
 
-1. npm install
-2. generate collection from photoshop using the generate.js script
-3. run npm rarity
+## Initial Setup
+1. Make sure you have node & npm installed on your machine
+2. Navigate to the root directory of the project and run `npm install`
 
-Note: Script is forked from Hashlips photoshop script
+## Generating your Collection
+Generate collection inside photoshop using the generate.jsx script
+
+## Update Metadata
+Run the update_metadata.js script inside photoshop.
+
+## DNA Check
+`npm run dna-check`
+
+## Condition Check
+`npm run condition-check`
+
+## Rarirty Check
+`npm run rarity-check`
