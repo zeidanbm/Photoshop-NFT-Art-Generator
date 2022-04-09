@@ -108,3 +108,5 @@ build
 .DS_Store
 GPUCache/
 old.jsx
+final.psd
+conditions.json
