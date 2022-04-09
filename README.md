@@ -7,6 +7,9 @@
 ## Generating your Collection
 Generate collection inside photoshop using the generate.jsx script
 
+## Using Conditions
+Create a new file `conditions.json` and copy content from `conditions.example`
+
 ## Update Metadata
 Run the update_metadata.js script inside photoshop.
 

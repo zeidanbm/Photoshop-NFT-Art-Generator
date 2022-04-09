@@ -82,7 +82,10 @@ function main() {
      */
     function parseConditions(_filename) {
         var path = app.activeDocument.path;
-        var jsonFile = new File(path + '/' + _filename)
+        var jsonFile = new File(path + '/' + _filename);
+        if(!jsonFile) {
+            return {};
+        }
         jsonFile.open('r');
         var str = jsonFile.read();
         jsonFile.close();
