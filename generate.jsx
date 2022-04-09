@@ -261,7 +261,7 @@ function saveImage(_edition) {
     var saveFile = new File(toFolder("build/images") + "/" + _edition + ".png");
     exportOptions = new ExportOptionsSaveForWeb();
     exportOptions.format = SaveDocumentType.PNG;
-    exportOptions.PNG24 = false;
+    exportOptions.PNG24 = true;
     exportOptions.transparency = true;
     exportOptions.interlaced = false;
     app.activeDocument.exportDocument(

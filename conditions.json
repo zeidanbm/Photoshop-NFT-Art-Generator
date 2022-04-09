@@ -1,7 +1,7 @@
 {
   "T-Low": [
     { "group": "Background", "layers": [ "Bg-Red" ]},
-    { "group": "Eye Color", "layers": [ "Eye-Green", "Eye-Pink" ]}
+    { "group": "Eye Color", "layers": [ "Eye-Green", "Eye-Pink", "Eye-Yellow", "Eye-Red" ]}
   ],
   "T-Middle": [
     { "group": "Background", "layers": [ "Bg-Black" ]},
