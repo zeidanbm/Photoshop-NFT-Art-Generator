@@ -113,21 +113,20 @@ function main() {
         if(_stackedRules[_layerGroup] && !checkIfContains(_stackedRules[_layerGroup], _layerName)) {
             return false;
         }
-
+        // if we don't have any rules for the selected layer
         if (!layerRules) {      
             return _stackedRules;
         }
         
         for(var i = 0; i < layerRules.length; i++) {
             var _groupName = layerRules[i].group;
-
             // logData(JSON.stringify({"_layerRules": layerRules, "groupName": _groupName }), 'cond-' + i);    
             // if we don't have any rules for the selected group then store them in the _stackedRules
              if(!_stackedRules[_groupName]) {
                 _stackedRules[_groupName] = layerRules[i].layers;
                 continue;
             }
-            // check if we have common layers
+            // check if we have common layer group rules
             var common = getCommonItems(layerRules[i].layers, _stackedRules[_groupName]);
              if(!common) {
                 return false;
@@ -171,7 +170,6 @@ function main() {
                 }
                 groups[groupIndx].layers[j].visible = true;
                 // logData(JSON.stringify({rules: rules, stackedRules: stackedRules, layerName: layerName, groupName: groupName}), groupIndx);
-                
                 return { index: j, layerName: layerName, rules: rules };
             }
         }

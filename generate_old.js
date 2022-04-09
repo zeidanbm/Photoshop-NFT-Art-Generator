@@ -81,8 +81,8 @@ function main() {
     saveMetadata(obj);
     resetLayers(groups);
   }
-  alert("Generation process is complete.");
   var timer = (new Date() - start) / 1000;
+  alert("Generation process is complete.");
   alert(timer + " seconds");
 }
 

@@ -9,7 +9,7 @@
     ]
   },
   "scripts": {
-    "rarity-check": "node rarity.js",
+    "rarity": "node rarity-check.js",
     "dna-check": "node dna-check.js",
     "condition-check": "node condition-check.js"
   },

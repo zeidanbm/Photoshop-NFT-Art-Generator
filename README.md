@@ -1,4 +1,4 @@
-# NFT Generator - Photoshop Script
+# Cyber Genie NFT Generator - Photoshop Script
 
 ## Initial Setup
 1. Make sure you have node & npm installed on your machine
