@@ -20,6 +20,10 @@ function main() {
     var description = prompt("What is the description for your collection?", "");
 
     var hasDNA = prompt("Do you want to use a DNA to make sure generated NFTs are unique? (1=>yes, 0=>no)", "1");
+    hasDNA = parseInt(hasDNA);
+
+    var hasConditions = prompt("Do you want to use a conditions? (1=>yes, 0=>no)", "1");
+    hasConditions = parseInt(hasConditions);
 
     alert(
         supply +
@@ -83,16 +87,17 @@ function main() {
     function parseConditions(_filename) {
         var path = app.activeDocument.path;
         var jsonFile = new File(path + '/' + _filename);
-        if(!jsonFile) {
-            return {};
-        }
         jsonFile.open('r');
         var str = jsonFile.read();
         jsonFile.close();
 
+        if(!str) {
+            hasConditions = 0;
+            return;
+        }
+
         return JSON.parse(str);
     }
-
     var CONDITIONS = parseConditions('conditions.json');
 
     /**
@@ -161,16 +166,19 @@ function main() {
             total += layerWeight;
             // If this value falls within the threshold, we're done!
             if (total >= threshold) {
-                // check layer rules     
-                var rules = updateRules(layerName, groupName, stackedRules);
-                // // if conditions fail
-                if (!rules) {
-                    if((j+1) === groups[groupIndx].layers.length) {
-                        breakCheck1 = true;
-                        break;
+                // check layer rules
+                if(hasConditions) {
+                    var rules = updateRules(layerName, groupName, stackedRules);
+                    // // if conditions fail
+                    if (!rules) {
+                        if((j+1) === groups[groupIndx].layers.length) {
+                            breakCheck1 = true;
+                            break;
+                        }
+                        continue;
                     }
-                    continue;
                 }
+                
                 groups[groupIndx].layers[j].visible = true;
                 // logData(JSON.stringify({rules: rules, stackedRules: stackedRules, layerName: layerName, groupName: groupName}), groupIndx);
                 return { index: j, layerName: layerName, rules: rules };
@@ -210,7 +218,7 @@ function main() {
             })
         }
         // get image DNA
-        if(parseInt(hasDNA)) {
+        if(hasDNA) {
             var hash = hashCode(JSON.stringify(hashTable));
             // check if dna exits, skip if true and store value if false
             if (dna[hash]) {
