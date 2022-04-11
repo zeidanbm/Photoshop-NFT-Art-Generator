@@ -37,6 +37,7 @@ async function checkConditions(dirname, _layer, _layersAgainst) {
                 if(attr.value == _layer) {
                     hasLayer = true;
                 } 
+            
                 if (_layersAgainst.includes(attr.value)) {
                     hasLayerAgainst = true;
                 }

@@ -163,9 +163,9 @@ function main() {
             var layerName = cleanName(groups[groupIndx].layers[j].name);
             var layerWeight = getRWeights(groups[groupIndx].layers[j].name) || 1;
             // Add the weight to our running total.
-            total += layerWeight;
+            threshold -= layerWeight;
             // If this value falls within the threshold, we're done!
-            if (total >= threshold) {
+            if (threshold < 0) {
                 // check layer rules
                 if(hasConditions) {
                     var rules = updateRules(layerName, groupName, stackedRules);
