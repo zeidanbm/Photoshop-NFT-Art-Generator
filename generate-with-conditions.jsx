@@ -1,5 +1,3 @@
-#target photoshop
-
 #include "./lib/json2.js";
 
 // bring application forward for double-click events
@@ -14,16 +12,14 @@ function main() {
     if (!continueConfirmation) return;
 
     var supply = prompt("How many images do you want to generate?", "10");
+    supply = parseInt(supply);
 
     var name = prompt("What is the name of your collection?", "Cyber Genie NFT");
 
     var description = prompt("What is the description for your collection?", "");
 
-    var hasDNA = prompt("Do you want to use a DNA to make sure generated NFTs are unique? (1=>yes, 0=>no)", "1");
+    var hasDNA = prompt("Do you want to use a DNA to make sure generated NFTs are unique? (1=>yes, 0=>no)", "0");
     hasDNA = parseInt(hasDNA);
-
-    var hasConditions = prompt("Do you want to use a conditions? (1=>yes, 0=>no)", "1");
-    hasConditions = parseInt(hasConditions);
 
     alert(
         supply +
@@ -56,9 +52,9 @@ function main() {
         
         for (var i = 0; i < array1.length; i++) {
             for (var j = 0; j < array2.length; j++) {
-            if (array1[i] == array2[j]) { // If item is present in both arrays
-                common.push(array1[i]); // Push to common array
-            }
+                if (array1[i] == array2[j]) { // If item is present in both arrays
+                    common.push(array1[i]); // Push to common array
+                }
             }
         }
         
@@ -92,7 +88,6 @@ function main() {
         jsonFile.close();
 
         if(!str) {
-            hasConditions = 0;
             return;
         }
 
@@ -128,8 +123,8 @@ function main() {
             return _stackedRules;
         }
 
-        _stackedRules.groups.concat(layerRules.groups);
-        _stackedRules.layers.concat(layerRules.layers);
+        _stackedRules.groups = _stackedRules.groups.concat(layerRules.groups);
+        _stackedRules.layers = _stackedRules.layers.concat(layerRules.layers);
         
         return _stackedRules;
     }
@@ -142,47 +137,46 @@ function main() {
         return _str.split("#").shift();
     }
 
-    function pickLayerByWeight(groupIndx, totalWeight, groupName, stackedRules) {
-        // pick a random number between 0 and totalWeight (normal distribution)
+    function pickLayerByWeight(groupIndx, groupName, stackedRules, _totalWeight, _groupLength, _threshold) {
         // logData(JSON.stringify({rules: stackedRules, totalWeight: totalWeight, groupName: groupName}), groupIndx);
-        var threshold = Math.floor(Math.random() * totalWeight);
-        var breakCheck1 = false;
-        var total = 0;
         // loop over layers in current group to pick one layer based on the random value
-        for (var j = 0; j < groups[groupIndx].layers.length; j++) {
-            var layerName = cleanName(groups[groupIndx].layers[j].name);
-            var layerWeight = getRWeights(groups[groupIndx].layers[j].name) || 1;
-            // Add the weight to our running total.
-            threshold -= layerWeight;
-            // If this value falls within the threshold, we're done!
-            if (threshold < 0) {
+        var breakCheck = false;
+        var layerWeight = 0;
+        var layerName;
+        for (var j = 0; j < _groupLength; j++) {
+            layerName = cleanName(groups[groupIndx].layers[j].name);
+            layerWeight = getRWeights(groups[groupIndx].layers[j].name) || 1;
+            _threshold -= layerWeight;
+            if (_threshold < 0) {
                 // check layer rules
-                if(hasConditions) {
-                    var rules = updateRules(layerName, groupName, stackedRules);
-                    // // if conditions fail
-                    if (!rules) {
-                        if((j+1) === groups[groupIndx].layers.length) {
-                            breakCheck1 = true;
-                            break;
-                        }
-                        continue;
+                var rules = updateRules(layerName, groupName, stackedRules);
+                // logData(JSON.stringify({rules: rules, layerName: layerName}), j + '_' + groupName + '_' + h);
+                // // if conditions fail
+                if (!rules) {
+                    if((j+1) === _groupLength) {
+                        breakCheck = true;
+                        break;
                     }
+                    continue;
                 }
-                
                 groups[groupIndx].layers[j].visible = true;
                 // logData(JSON.stringify({rules: rules, stackedRules: stackedRules, layerName: layerName, groupName: groupName}), groupIndx);
                 return { index: j, layerName: layerName, rules: rules };
             }
         }
-        // re-run the function if conditions failed and no layer was selected
-        if(breakCheck1) {
-            return pickLayerByWeight(groupIndx, totalWeight, groupName, stackedRules);
+
+        if(breakCheck) {
+            // remove the last layer and pick a new threshold
+            _totalWeight = _totalWeight - layerWeight
+            _threshold = Math.floor(Math.random() * _totalWeight);
+            _groupLength = _groupLength - 1;
+            return pickLayerByWeight(i, groupName, stackedRules, _totalWeight, _groupLength, _threshold);
         }
     }
 
     var dna = {};
     // loop over the supply i.e total pieces to generate
-    for (var h = 1; h < parseInt(supply) + 1; h++) {
+    for (var h = 1; h < supply + 1; h++) {
         var obj = {};
         obj.name = name + " #" + h;
         obj.description = description;
@@ -199,8 +193,10 @@ function main() {
         for (var i = 0; i < groups.length; i++) {
             var totalWeight = getRWeights(groups[i].name) || groups[i].layers.length;
             var groupName = cleanName(groups[i].name);
-
-            var resutls = pickLayerByWeight(i, totalWeight, groupName, stackedRules);
+            // pick a random number between 0 and totalWeight (normal distribution)
+            var threshold = Math.floor(Math.random() * totalWeight);
+            var groupLength = groups[i].layers.length;
+            var resutls = pickLayerByWeight(i, groupName, stackedRules, totalWeight, groupLength, threshold);
             // store selected groups and layers for current image, to be used in checking conditions for next selected layer
             stackedRules = resutls.rules
             hashTable[groupName] = resutls.layerName;
@@ -212,6 +208,11 @@ function main() {
         }
         // get image DNA
         if(hasDNA) {
+            hasDNA++;
+            if(hasDNA > supply * 0.5) {
+                alert("Too little combinations to generate unique NFTs. Aborting...");
+                break;
+            }
             var hash = hashCode(JSON.stringify(hashTable));
             // check if dna exits, skip if true and store value if false
             if (dna[hash]) {

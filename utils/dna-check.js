@@ -46,11 +46,13 @@ async function readFiles(dirname) {
 async function checkDNA() {
     try {
         let results = {};
+        let counter = 0;
         let hashMap = await readFiles(`${basePath}/build/metadata`);
 
         for (let k of Object.keys(hashMap)) {
             if (hashMap[k].count > 1) {
                 results[k] = hashMap[k];
+                counter += hashMap[k].count;
             }
         }
         if(isEmpty(results)) {
@@ -64,18 +66,20 @@ async function checkDNA() {
                 type: 'confirm',
                 name: 'value',
                 initial: false,
-                message: 'Do you want to remove the duplicate NFTs?'
+                message: `Do you want to remove the duplicate NFTs? (${counter} files)`
             });
-            if(!removeFiles) {
+            if(!removeFiles.value) {
                 process.exit(0);
-            }
-            // loop over odd elements only
-            for (let k of Object.keys(results)) {
-                for (var i = 1; i < results[k].files.length; i += 2) {
-                    await unlink(`${metaDir}/${results[k].files[i]}`);
-                    const fileNumber = results[k].files[i].match(/\d+/gm);
-                    if (fs.existsSync(`${imgDir}/${fileNumber}.png`)) {
-                        await unlink(`${imgDir}/${fileNumber}.png`);
+            } else {
+                console.log('wtf');
+                // loop over odd elements only
+                for (let k of Object.keys(results)) {
+                    for (var i = 1; i < results[k].files.length; i += 2) {
+                        await unlink(`${metaDir}/${results[k].files[i]}`);
+                        const fileNumber = results[k].files[i].match(/\d+/gm);
+                        if (fs.existsSync(`${imgDir}/${fileNumber}.png`)) {
+                            await unlink(`${imgDir}/${fileNumber}.png`);
+                        }
                     }
                 }
             }

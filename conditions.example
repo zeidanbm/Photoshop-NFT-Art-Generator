@@ -1,6 +1,6 @@
 {
   "T-Low": {
-    "layers":[ "Bg-Red" , "Eye-Green", "Eye-Pink", "Eye-Yellow", ":Eye-Red"],
+    "layers":["Bg-Red" , "Eye-Green", "Eye-Pink", "Eye-Yellow", "Eye-Red"],
     "groups":["Background", "Eye Color"]
   },
   "T-Middle": {
@@ -8,15 +8,15 @@
     "groups":["Background", "Eye Color"]
   },
   "B-Middle": {
-    "layers":[ "Ir-Small", "Ir-Medium", "Eye-Cyan", "Eye-Purple", "Eye-Red"],
+    "layers":["Ir-Small", "Ir-Medium", "Eye-Cyan", "Eye-Purple", "Eye-Red"],
     "groups":["Iris", "Eye Color"]
   },
   "Ir-Large": {
-    "layers":[ "Bg-Red", "Eyeball-White"],
+    "layers":["Bg-Red", "Eyeball-White"],
     "groups":["Eyeball", "Background"]
   },
   "Eye-Purple": {
-    "layers":[ "Eyeball-Red"],
+    "layers":["Eyeball-Red"],
     "groups":["Eyeball"]
   }
 }
