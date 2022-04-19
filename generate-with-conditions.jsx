@@ -117,30 +117,20 @@ function main() {
     function updateRules(_layerName, _layerGroup, _stackedRules) { 
         var layerRules = CONDITIONS[_layerName];
 
-        // check the selected layer against the stacked rules
-        if(_stackedRules[_layerGroup] && !checkIfContains(_stackedRules[_layerGroup], _layerName)) {
-            return false;
+        if(checkIfContains(_stackedRules.groups, _layerGroup)) {
+            if(!checkIfContains(_stackedRules.layers, _layerName)) {
+                return false;
+            }
         }
-        // if we don't have any rules for the selected layer
+
+        // if no conditions then return old conditions
         if (!layerRules) {      
             return _stackedRules;
         }
+
+        _stackedRules.groups.concat(layerRules.groups);
+        _stackedRules.layers.concat(layerRules.layers);
         
-        for(var i = 0; i < layerRules.length; i++) {
-            var _groupName = layerRules[i].group;
-            // logData(JSON.stringify({"_layerRules": layerRules, "groupName": _groupName }), 'cond-' + i);    
-            // if we don't have any rules for the selected group then store them in the _stackedRules
-             if(!_stackedRules[_groupName]) {
-                _stackedRules[_groupName] = layerRules[i].layers;
-                continue;
-            }
-            // check if we have common layer group rules
-            var common = getCommonItems(layerRules[i].layers, _stackedRules[_groupName]);
-             if(!common) {
-                return false;
-             }
-             _stackedRules[_groupName] = common;
-        }
         return _stackedRules;
     }
 
@@ -201,7 +191,10 @@ function main() {
         obj.attributes = [];
         var hashTable = {};
         var selectedLayerMap = {};
-        var stackedRules = {};
+        var stackedRules = {
+            groups: [],
+            layers: []
+        };
         // loop over all groups
         for (var i = 0; i < groups.length; i++) {
             var totalWeight = getRWeights(groups[i].name) || groups[i].layers.length;

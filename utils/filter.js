@@ -57,6 +57,7 @@ async function main(layer, removeCount) {
 
         console.log('-----------------------------');
         console.log(`${removeCount - result} files removed.`);
+        console.log('-----------------------------');
     } catch (err) {
         throw err;
     }
