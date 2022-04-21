@@ -36,8 +36,8 @@ async function cleanUp(_baseName) {
             data.edition = i;
           
             const fileNumber = filename.match(/\d+/gm);
-            await writeFile(`${metaDir}/${i}.json`, JSON.stringify(data));
             await unlink(`${metaDir}/${filename}`);
+            await writeFile(`${metaDir}/${i}.json`, JSON.stringify(data));
             await rename(`${imgDir}/${fileNumber}.png`, `${imgDir}/${i}.png`)
       
             i++;
