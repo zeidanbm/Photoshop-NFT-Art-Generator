@@ -2,6 +2,8 @@
 
 // bring application forward for double-click events
 app.bringToFront();
+app.preferences.exportClipboard = false;
+// app.activeDocument.cmykProfile = "adobe rgb 1998";
 var start = new Date();
 
 function main() {
@@ -124,16 +126,21 @@ function resetLayers(_groups) {
 
 function saveImage(_edition) {
     var saveFile = new File(toFolder("build/images") + "/" + _edition + ".png");
-    exportOptions = new ExportOptionsSaveForWeb();
-    exportOptions.format = SaveDocumentType.PNG;
-    exportOptions.PNG24 = true;
-    exportOptions.transparency = true;
+    exportOptions = new PNGSaveOptions();
+    // exportOptions.format = SaveDocumentType.PNG;
+    // exportOptions.PNG8 = false;
+    // exportOptions.PNG24 = true;
+    // exportOptions.transparency = true;
     exportOptions.interlaced = false;
-    app.activeDocument.exportDocument(
-        saveFile,
-        ExportType.SAVEFORWEB,
-        exportOptions
-    );
+    // exportOptions.includeProfile = true;
+    // exportOptions.srgb = false;
+    // exportOptions.resolution = 300;
+    // app.activeDocument.exportDocument(
+    //     saveFile,
+    //     ExportType.SAVEFORWEB,
+    //     exportOptions
+    // );
+    app.activeDocument.saveAs(saveFile, exportOptions, true, Extension.LOWERCASE)
 }
 
 function saveMetadata(_data) {

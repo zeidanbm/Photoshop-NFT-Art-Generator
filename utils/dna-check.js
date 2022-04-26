@@ -71,7 +71,6 @@ async function checkDNA() {
             if(!removeFiles.value) {
                 process.exit(0);
             } else {
-                console.log('wtf');
                 // loop over odd elements only
                 for (let k of Object.keys(results)) {
                     for (var i = 1; i < results[k].files.length; i += 2) {

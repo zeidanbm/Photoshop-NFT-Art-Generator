@@ -6,15 +6,14 @@
 3. Download and install Docker
 4. Download and install MongoDB Compass
 
-## Generating your Collection
+## Generating your Collection without conditions
 Generate collection inside photoshop using the generate.js script
+
+## Generating your Collection with conditions
+Generate collection inside photoshop using the generate-with-conditions.js script
 
 ## Using Conditions
 Create a new file `conditions.json` and copy content from `conditions.example`
-`npm run conditions-apply`
-
-## Update Metadata
-Run the update_metadata.js script inside photoshop to update your metadata url
 
 ## DNA Check
 To check for duplicate NFTs and remove them
@@ -25,7 +24,7 @@ This allows you to check a layer condition against an array of conditions
 `npm run conditions-check`
 
 ## Rarirty Check
-`npm run rarity-check`
+`npm run rarity`
 
 ## Filter
 Run the filter to remove metadata and images by providing a layer name and count
@@ -38,8 +37,4 @@ Run the cleanup script to cleanup the metadata/images and rename all files start
 ## Starting MongoDB
 Make sure docker is installed and running on your machine. Then execute the command below to start mongodb.
 `docker-compose up`
-
-## Inject Data into MongoDB
-Run the inject script to add all metadata to your database. The script will not remove previous data. To do that, simply use MongoDB Compass and drop the collection.
-`npm run inject`
 
