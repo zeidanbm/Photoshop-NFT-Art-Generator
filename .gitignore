@@ -121,6 +121,9 @@ conditions.json
 # testing
 /coverage
 
+# database
+data/
+
 # production
 /build
 
