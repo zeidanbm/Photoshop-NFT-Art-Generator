@@ -1,0 +1,25 @@
+[
+    { 
+        "supply": 10,
+        "groups": [
+            {"name": "Top lid", "index": 0},
+            {"name": "Bottom lid", "index": 1},
+            {"name": "Shine", "index": 2},
+            {"name": "Iris", "index": 3},
+            {"name": "Eye Color", "index": 4},
+            {"name": "Eyeball", "index": 5},
+            {"name": "Background", "index": 6}
+        ]
+    },
+    {
+        "supply": 15,
+        "groups": [
+            {"name": "Top lid", "index": 0},
+            {"name": "Bottom lid", "index": 1},
+            {"name": "Iris", "index": 3},
+            {"name": "Eye Color", "index": 4},
+            {"name": "Eyeball", "index": 5},
+            {"name": "Background", "index": 6}
+        ]
+    }
+]

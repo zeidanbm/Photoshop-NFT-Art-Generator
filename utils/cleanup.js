@@ -26,21 +26,26 @@ console.log(boxen(chalk.white.bold("The Cyber Genie Team"), boxenOptions));
 
 async function cleanUp(_baseName) {
     try {
-        let i = 1;
+        let counter = 1;
         const dirCont = await readdir(metaDir);
         let filenames = dirCont.filter(function (elm) { return elm.match(/.*\.(json?)/ig); });
 
         for (const filename of filenames) {
             let data = JSON.parse((await readFile(`${metaDir}/${filename}`)).toString());
-            data.name = `${_baseName} #${i}`;
-            data.edition = i;
+            data.name = `${_baseName} #${counter}`;
+            data.edition = counter;
           
             const fileNumber = filename.match(/\d+/gm);
             await unlink(`${metaDir}/${filename}`);
-            await writeFile(`${metaDir}/${i}.json`, JSON.stringify(data));
-            await rename(`${imgDir}/${fileNumber}.png`, `${imgDir}/${i}.png`)
+            await writeFile(`${metaDir}/#${counter}.json`, JSON.stringify(data));
+            await rename(`${imgDir}/${fileNumber}.png`, `${imgDir}/#${counter}.png`);
       
-            i++;
+            counter++;
+        }
+
+        for (let i = 1; i < counter; i++) {
+            await rename(`${metaDir}/#${i}.json`, `${metaDir}/${i}.json`);
+            await rename(`${imgDir}/#${i}.png`, `${imgDir}/${i}.png`);
         }
     } catch (err) {
         throw err;
@@ -67,7 +72,11 @@ async function main(baseNameInput) {
             validate: value => value ? true : 'Field is required'
         });
 
-        await main(baseNameInput.value);
+        if(!baseNameInput.value) {
+            process.exit(0);
+        } else {
+            await main(baseNameInput.value);
+        }
     } catch (e) {
         console.log(e);
     }

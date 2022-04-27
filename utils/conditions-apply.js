@@ -55,7 +55,7 @@ async function applyConditions(conditions) {
 
 async function main() {
     try {
-        const conditions = JSON.parse((await readFile(`${basePath}/conditions.json`)).toString());
+        const conditions = JSON.parse((await readFile(`${basePath}/setup/conditions.json`)).toString());
         await applyConditions(conditions);
 
         console.log('-----------------------------');

@@ -78,7 +78,11 @@ async function main(layer, removeCount) {
     });
 
     try {
-        await main(layerInput.value, removeCountInput.value);
+        if(!removeCountInput.value || !removeCountInput.value) {
+            process.exit(0);
+        } else {
+            await main(layerInput.value, removeCountInput.value);
+        }
     } catch (e) {
         console.log(e);
     }

@@ -1,19 +1,26 @@
-# Cyber Genie NFT Generator - Photoshop Script
+# Cyber Genie NFT Generator - Photoshop Script & Node.js Utilities
 
 ## Initial Setup
-1. Make sure you have Node & npm installed on your machine
-2. Navigate to the root directory of the project and run `npm install`
-3. Download and install Docker
-4. Download and install MongoDB Compass
+1. Install latest photoshop
+1. Make sure you have Node & npm installed on your machine. (Optional, only need to use the utilites after generating the NFTs.)
+2. Navigate to the root directory of the project and run `npm install` (Optional, only need to use the utilites after generating the NFTs.)
+3. Download and install Docker (Optional, only need to use application to filter and browse through the generated NFTs.)
 
 ## Generating your Collection without conditions
 Generate collection inside photoshop using the generate.js script
 
 ## Generating your Collection with conditions
-Generate collection inside photoshop using the generate-with-conditions.js script
+Generate collection inside photoshop using the generate or generate-with-conditions.js script
 
-## Using Conditions
-Create a new file `conditions.json` and copy content from `conditions.example`
+### Using Conditions
+Create a new file `conditions.json`, copy content from `conditions.example`. Then adjust to the file to your needs. 
+- Layer rules must be top down. That means the first layer can have rules for all layers under it. However, the layer after can't have rules for previous layers. The order the layers follow is the same as in photoshop i.e top layer comes first.
+- Layer and group names must be exact as in photoshop.
+
+### Using layer group layouts
+Create a new file `groups.json`, copy content from `groups.example`. Then adjust the file to your needs.
+- Group names must be exact as in photoshop.
+- Group indexes must follow the same order as in photoshop. Top layer comes first with index 0.
 
 ## DNA Check
 To check for duplicate NFTs and remove them
@@ -34,7 +41,5 @@ Run the filter to remove metadata and images by providing a layer name and count
 Run the cleanup script to cleanup the metadata/images and rename all files starting from 1 to N
 `npm run cleanup`
 
-## Starting MongoDB
-Make sure docker is installed and running on your machine. Then execute the command below to start mongodb.
-`docker-compose up`
-
+## Starting the web application
+Make sure docker is installed and running on your machine. Then execute the command `docker-compose up`. 
