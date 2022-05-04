@@ -1,10 +1,10 @@
-# Cyber Genie NFT Generator - Photoshop Script & Node.js Utilities
+# Cyber Genie NFT Generator - Photoshop Scripts & Utilities
 
 ## Initial Setup
-1. Install latest photoshop
-1. Make sure you have Node & npm installed on your machine. (Optional, only need to use the utilites after generating the NFTs.)
-2. Navigate to the root directory of the project and run `npm install` (Optional, only need to use the utilites after generating the NFTs.)
-3. Download and install Docker (Optional, only need to use application to filter and browse through the generated NFTs.)
+1. Install the latest Photoshop
+1. Make sure you have Node & npm installed on your machine. (Optional, only needed to use the utilites after generating the NFTs.)
+2. Navigate to the root directory of the project and run `npm install` (Optional, only needed to use the utilites after generating the NFTs.)
+3. Download and install Docker (Optional, only needed to use the application for browsing/filtering the generated NFTs.)
 
 ## Generating your Collection without conditions
 Generate collection inside photoshop using the generate.js script
