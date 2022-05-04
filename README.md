@@ -6,29 +6,29 @@
 2. Navigate to the root directory of the project and run `npm install` (Optional, only needed to use the utilites after generating the NFTs.)
 3. Download and install Docker (Optional, only needed to use the application for browsing/filtering the generated NFTs.)
 
-## Generating your Collection without conditions
-Generate collection inside photoshop using the generate.js script
-
-## Generating your Collection with conditions
-Generate collection inside photoshop using the generate or generate-with-conditions.js script
+## Generating your Collection
+Generate your art collection using Photoshop with either the `generate.jsx` or `generate-with-conditions.jsx` script.
 
 ### Using Conditions
-Create a new file `conditions.json`, copy content from `conditions.example`. Then adjust to the file to your needs. 
-- Layer rules must be top down. That means the first layer can have rules for all layers under it. However, the layer after can't have rules for previous layers. The order the layers follow is the same as in photoshop i.e top layer comes first.
-- Layer and group names must be exact as in photoshop.
+To be able to use the conditions, you will need to create a `conditions.json` file in the setup folder. Copy the contents from `conditions.example` into your `conditions.json` file. 
+Finally, adjust the conditions to your needs. Keep in mind the following points when editing the file: 
+- Layer rules must be top down. That means the first layer can have rules for all layers under it. However, the layer after can't have rules for previous layers. The order of the layers is the same as in Photoshop and top layer comes first.
+- Layer and group names must be exact as in Photoshop
+- Must be a valid json file, following the same format provided in the example file
 
 ### Using layer group layouts
-Create a new file `groups.json`, copy content from `groups.example`. Then adjust the file to your needs.
-- Group names must be exact as in photoshop.
-- Group indexes must follow the same order as in photoshop. Top layer comes first with index 0.
+To be able to use layer group layouts, you will need to create a new file `groups.json` in the setup folder. Copy the content from `groups.example` into your `groups.json` file. Then adjust the file to your needs. Keep in mind the following points when editing the file:
+- Group names must be exact as in Photoshop
+- Group indexes must follow the same order as in Photoshop. Top layer comes first with index 0
+- Must be a valid json file, following the same format provided in the example file
 
 ## DNA Check
 To check for duplicate NFTs and remove them
-`npm run dna-check`
+`npm run dna`
 
 ## Condition Check
 This allows you to check a layer condition against an array of conditions
-`npm run conditions-check`
+`npm run conditions`
 
 ## Rarirty Check
 `npm run rarity`
@@ -38,8 +38,8 @@ Run the filter to remove metadata and images by providing a layer name and count
 `npm run filter`
 
 ## Clean up
-Run the cleanup script to cleanup the metadata/images and rename all files starting from 1 to N
-`npm run cleanup`
+Run the clean script to clean the metadata/images and rename all files starting from 1 to N
+`npm run clean`
 
 ## Starting the web application
-Make sure docker is installed and running on your machine. Then execute the command `docker-compose up`. 
+If you would like to browse through your NFT collection and filter them using a browser, you can run a small application using docker. First, make sure docker is installed and running on your machine. Then simply execute the command `docker-compose up`.
