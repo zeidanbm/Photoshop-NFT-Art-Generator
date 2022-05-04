@@ -5,19 +5,27 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "rarity": "node utils/rarity-check.js",
-    "dna-check": "node utils/dna-check.js",
-    "conditions-check": "node utils/conditions-check.js",
-    "conditions-apply": "node utils/conditions-apply.js",
+    "rarity": "node utils/rarity.js",
+    "dna": "node utils/dna.js",
+    "conditions": "node utils/conditions.js",
     "filter": "node utils/filter.js",
-    "cleanup": "node utils/cleanup.js",
-    "inject": "node utils/inject.js"
+    "clean": "node utils/clean.js",
+    "inject": "node utils/inject.js",
+    "test": "NODE_ENV=test mocha '/__test__/*.spec.js' --reporter spec",
+    "coverage": "nyc npm test",
+    "report": "nyc report"
   },
   "devDependencies": {
     "boxen": "^6.2.1",
+    "chai": "^4.3.6",
     "chalk": "^5.0.1",
+    "fast-check": "^2.25.0",
     "lodash.isempty": "^4.4.0",
+    "mocha": "^10.0.0",
     "mongodb": "^4.5.0",
-    "prompts": "^2.4.2"
+    "nyc": "^15.1.0",
+    "prompts": "^2.4.2",
+    "sinon": "^13.0.2",
+    "sinon-chai": "^3.7.0"
   }
 }

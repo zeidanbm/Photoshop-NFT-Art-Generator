@@ -24,7 +24,7 @@ const boxenOptions = {
 };
 console.log(boxen(chalk.white.bold("The Cyber Genie Team"), boxenOptions));
 
-async function cleanUp(_baseName) {
+async function clean(_baseName) {
     try {
         let counter = 1;
         const dirCont = await readdir(metaDir);
@@ -54,7 +54,7 @@ async function cleanUp(_baseName) {
 
 async function main(baseNameInput) {
     try {
-        await cleanUp(baseNameInput);
+        await clean(baseNameInput);
 
         console.log('-----------------------------');
         console.log('Done.');
