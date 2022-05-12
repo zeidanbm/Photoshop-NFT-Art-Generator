@@ -1,0 +1,4 @@
+port: "8080"
+
+db: 
+  dbname: "cyber_genie_nfts"
