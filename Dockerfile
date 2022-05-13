@@ -1,17 +1,35 @@
-#Each instruction in this file creates a new layer
-#Here we are getting our node as Base image
-FROM node:latest
-#Creating a new directory for app files and setting path in the container
-RUN mkdir -p /usr/src/app
-#setting working directory in the container
-WORKDIR /usr/src/app
-#copying the package.json file(contains dependencies) from project source dir to container dir
-COPY backend/package.json /usr/src/app
-# installing the dependencies into the container
-RUN npm install
-#copying the source code of Application into the container dir
-COPY backend /usr/src/app
-#container exposed network port number
-EXPOSE 7500
-#command to run within the container
-CMD ["npm", "run", "dev"]
+FROM --platform=linux/amd64 golang:1.18 as builder
+
+LABEL author Cyber Genie Team
+
+# Where our file will be in the docker container
+WORKDIR  /app
+
+# Copying the source code of Application into the container dir
+COPY ./nft-backend ./
+
+# Download modules and build executable
+RUN go mod download
+RUN go mod verify
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o /api ./cmd/main.go
+
+# Install Air for hot reload
+# RUN go install github.com/cosmtrek/air@latest
+
+# final stage
+FROM --platform=linux/amd64 alpine:latest
+
+# RUN apk update && apk add dos2unix
+
+COPY nft-backend/configs/ configs/
+COPY ./nft-backend/.env ./
+
+COPY --from=builder /api ./
+# RUN dos2unix /api
+RUN chmod +x ./api
+
+# Container exposed network port number
+EXPOSE 8075
+
+# Start the binary
+CMD  ["/api"]

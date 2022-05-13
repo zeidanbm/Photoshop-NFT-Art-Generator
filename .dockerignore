@@ -1,0 +1,13 @@
+.vscode
+.git
+
+build
+data
+mongo-db-volume
+GPUCache
+logs
+node_modules
+scripts
+setup
+*.psd
+*.log

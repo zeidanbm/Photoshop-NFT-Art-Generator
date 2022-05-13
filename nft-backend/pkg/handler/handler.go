@@ -22,13 +22,13 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			lists.GET("/", h.getPaginatedItems)
 			lists.GET("/:id", h.getItemById)
-			lists.DELETE("/:id", h.deleteItemById)
+			// lists.DELETE("/:id", h.deleteItemById)
 
 		}
-		bulk := api.Group("/bulk")
-		{
-			bulk.DELETE("/:ids", h.deleteItemsByIds)
-		}
+		// bulk := api.Group("/bulk")
+		// {
+		// 	bulk.DELETE("/:ids", h.deleteItemsByIds)
+		// }
 	}
 
 	return router

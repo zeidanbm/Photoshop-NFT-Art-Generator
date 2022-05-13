@@ -31,7 +31,7 @@ func main() {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
 
-	repos := repository.NewRepository()
+	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 
@@ -42,7 +42,8 @@ func main() {
 }
 
 func initConfig() error {
-	viper.AddConfigPath("configs")
 	viper.SetConfigName("config")
-	return viper.ReadConfig()
+	viper.AddConfigPath("configs")
+
+	return viper.ReadInConfig()
 }

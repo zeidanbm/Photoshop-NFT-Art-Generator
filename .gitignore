@@ -128,6 +128,11 @@ groups.json
 
 # production
 /build
+mongo-db-volume
+vendor
+
+# Build artifact
+nft-backend/nft-backend
 
 # misc
 .DS_Store

@@ -1,17 +1,44 @@
 version: '3'
 services:
-  backend:
-    container_name: backend-app
+  backend-server:
+    platform: linux/amd64
+    container_name: backend-server
     restart: always
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "7500:7500"
+      - "8075:8075"
     links:
-      - mongo
-  mongo:
-    container_name: mongo-app
+      - mongo-db
+    depends_on:
+      - mongo-db
+    env_file: 
+      - ./nft-backend/.env
+    networks:
+      - backend
+      - frontend
+  mongo-db:
+    container_name: mongo-db
     image: mongo
+    # environment:
+    #   - MONGO_INITDB_DATABASE=
+    #   - MONGO_INITDB_ROOT_USERNAME=
+    #   - MONGO_INITDB_ROOT_PASSWORD=
     volumes:
-      - ./data:/data/db
+      - ./mongo-db-volume:/data/db
     ports:
-      - '27018:27017'
+      - '27017-27019:27017-27019'
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
+    name: backend
+  frontend:
+    driver: bridge
+    name: fronten
+volumes:
+  mongo-db:
+    driver: local
+    name: mongo-db-volume

@@ -9,7 +9,7 @@ const { MongoClient } = require("mongodb");
 import boxen from 'boxen';
 import chalk from 'chalk';
 
-const uri = 'mongodb://localhost:27018';
+const uri = 'mongodb://localhost:27017';
 const metaDir = `${basePath}/build/metadata`;
 const imgDir = `${basePath}/build/images`;
 const boxenOptions = {
