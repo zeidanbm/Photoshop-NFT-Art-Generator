@@ -154,7 +154,7 @@ function generateNFTs(_groups, _supply, _name, _description, _hasDNA, _selectedG
         // loop over all groups
         for (var i = 0; i < _selectedGroups.length; i++) {
             var groupIndex = _selectedGroups[i].index || i;
-            // logData(JSON.stringify({groupIndex: groupIndex, name: _groups[groupIndex].name}), i);
+            // logData(JSON.stringify({groupIndex: groupIndex, name: _groups[groupIndex].name}), i, 'logs');
             var totalWeight = getRWeights(_groups[groupIndex].name) || _groups[groupIndex].layers.length;
             var groupName = cleanName(_groups[groupIndex].name);
             var groupLength = _groups[groupIndex].layers.length;
@@ -235,8 +235,8 @@ function saveMetadata(_data) {
     file.close();
 }
 
-function logData(_data, _name) {
-    var file = new File(toFolder("logs") + "/" + _name + ".json");
+function logData(_data, _name, _folder) {
+    var file = new File(toFolder(_folder) + "/" + _name + ".json");
     file.open("w");
     file.write(JSON.stringify(_data));
     file.close();

@@ -48,7 +48,7 @@ function pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight
                 continue;
             }
             group.layers[j].visible = true;
-            // logData(JSON.stringify({rules: rules, stackedRules: stackedRules, layerName: layerName, groupName: groupName}), groupIndx);
+            // logData(JSON.stringify({rules: rules, stackedRules: stackedRules, layerName: layerName, groupName: groupName}), groupIndx, 'logs');
             return { index: j, layerName: layerName, rules: rules };
         }
     }

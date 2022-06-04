@@ -8,7 +8,7 @@
  * @param {number} threshold
  * @param {number} totalWeight
  * @param {obj} stackedRules
- * @returns 
+ * @returns
  */
 function pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight, stackedRules) {
     // loop over layers in current group to pick one layer based on the random value
