@@ -22,6 +22,10 @@
         }
     }
 
+    logData(layerCountAgg, 'layer-count-agg', 'setup')
+    logData(layersArray, 'all-layers', 'setup')
+    logData(groupsArray, 'all-groups', 'setup')
+
     for (var i = 0; i < _groups.length - 1; i++) {
         currentGroups = groupsArray.slice(i+1)
         currentLayers = layersArray.slice(layerCountAgg[groupsArray[i]])
@@ -38,6 +42,7 @@
 }
 
 var groups = app.activeDocument.layerSets;
+
 var result = extractLayers(groups)
 logData(result, 'all-conditions', 'setup')
 alert("Extraction process is complete.");

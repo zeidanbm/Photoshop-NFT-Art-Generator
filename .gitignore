@@ -113,6 +113,9 @@ final.psb
 conditions.json
 all-conditions.json
 groups.json
+layer-count-agg.json
+all-layers.json
+all-groups.json
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
