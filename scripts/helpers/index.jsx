@@ -57,7 +57,7 @@ function getCommonItems(array1, array2) {
  * @param {array} a
  * @param {any} obj
  */
-function checkIfContains(a, obj) {
+function checkIfArrayContains(a, obj) {
     var i = a.length;
     while (i--) {
         if (a[i] === obj) {
@@ -139,6 +139,7 @@ function generateNFTs(_groups, _supply, _name, _description, _hasDNA, _selectedG
     _supply = _supply + totalGenerated;
     // loop over the supply i.e total pieces to generate
     for (; totalGenerated < _supply; totalGenerated++) {
+        app.changeProgressText('Generating NFTs...#' + totalGenerated);
         var obj = {};
         obj.name = _name + " #" + totalGenerated;
         obj.description = _description;
@@ -147,10 +148,7 @@ function generateNFTs(_groups, _supply, _name, _description, _hasDNA, _selectedG
         obj.attributes = [];
         var hashTable = {};
         var selectedLayerMap = {};
-        var stackedRules = {
-            groups: [],
-            layers: []
-        };
+        resetStackedRules();
         // loop over all groups
         for (var i = 0; i < _selectedGroups.length; i++) {
             var groupIndex = _selectedGroups[i].index || i;
@@ -160,9 +158,8 @@ function generateNFTs(_groups, _supply, _name, _description, _hasDNA, _selectedG
             var groupLength = _groups[groupIndex].layers.length;
             // pick a random number between 0 and totalWeight (normal distribution)
             var threshold = Math.floor(Math.random() * totalWeight);
-
-            var results = pickLayerByWeight(_groups[groupIndex], groupLength, threshold, groupName, totalWeight, stackedRules);
-            stackedRules = results.rules;
+            var results = pickLayerByWeight(_groups[groupIndex], groupLength, threshold, groupName, totalWeight);
+            
             hashTable[groupName] = results.layerName;
             selectedLayerMap[groupIndex] = results.index;
             obj.attributes.push({

@@ -1,33 +1,39 @@
 #include "./lib/json2.js";
 #include "./helpers/index.jsx";
 
+function resetStackedRules() {
+    STACKED_RULES = {
+        groups: [],
+        layers: []
+    };
+}
+
 /**
  * udpate stacked layer rules, returns false if conditions fail
  * @param {string} _layerName
  * @param {string} _layerGroup
- * @param {obj} _stackedRules
  */
- function updateRules(_layerName, _layerGroup, _stackedRules) { 
+ function updateRules(_layerName, _layerGroup) { 
     var layerRules = CONDITIONS[_layerName];
 
-    if(checkIfContains(_stackedRules.groups, _layerGroup)) {
-        if(!checkIfContains(_stackedRules.layers, _layerName)) {
+    if(checkIfArrayContains(STACKED_RULES.groups, _layerGroup)) {
+        if(!checkIfArrayContains(STACKED_RULES.layers, _layerName)) {
             return false;
         }
     }
 
-    // if no conditions then return old conditions
+    // if no conditions for current layer
     if (!layerRules) {      
-        return _stackedRules;
+        return true;
     }
 
-    _stackedRules.groups = _stackedRules.groups.concat(layerRules.groups);
-    _stackedRules.layers = _stackedRules.layers.concat(layerRules.layers);
+    STACKED_RULES.groups = STACKED_RULES.groups.concat(layerRules.groups);
+    STACKED_RULES.layers = STACKED_RULES.layers.concat(layerRules.layers);
     
-    return _stackedRules;
+    return true;
 }
 
-function pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight, stackedRules) {
+function pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight) {
     // loop over layers in current group to pick one layer based on the random value
     var breakCheck = false;
     var layerWeight = 0;
@@ -38,7 +44,7 @@ function pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight
         threshold -= layerWeight;
         if (threshold < 0) {
             // check layer rules
-            var rules = updateRules(layerName, groupName, stackedRules);
+            var rules = updateRules(layerName, groupName);
             // // if conditions fail
             if (!rules) {
                 if((j+1) === groupLength) {
@@ -48,7 +54,7 @@ function pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight
                 continue;
             }
             group.layers[j].visible = true;
-            // logData(JSON.stringify({rules: rules, stackedRules: stackedRules, layerName: layerName, groupName: groupName}), groupIndx, 'logs');
+            // logData(JSON.stringify({rules: rules, stackedRules: STACKED_RULES, layerName: layerName, groupName: groupName}), groupIndx, 'logs');
             return { index: j, layerName: layerName, rules: rules };
         }
     }
@@ -58,10 +64,15 @@ function pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight
         totalWeight = totalWeight - layerWeight
         threshold = Math.floor(Math.random() * totalWeight);
         groupLength = groupLength - 1;
-        return pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight, stackedRules);
+        return pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight);
     }
 }
 
+var STACKED_RULES = {
+    groups: [],
+    layers: []
+};
 var CONDITIONS = parseJsonFile('/setup/conditions.json');
 var INITAL_GROUPS = parseJsonFile('/setup/groups.json');
-main(true);
+
+app.doForcedProgress("Generating NFTs...", 'main(true)');

@@ -7,10 +7,9 @@
  * @param {number} groupLength
  * @param {number} threshold
  * @param {number} totalWeight
- * @param {obj} stackedRules
  * @returns
  */
-function pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight, stackedRules) {
+function pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight) {
     // loop over layers in current group to pick one layer based on the random value
     for (var j = 0; j < groupLength; j++) {
         var layerName = cleanName(group.layers[j].name);
@@ -21,9 +20,9 @@ function pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight
         if (threshold < 0) {
             // check layer rules
             group.layers[j].visible = true;
-            return { index: j, layerName: layerName, rules: false };
+            return { index: j, layerName: layerName };
         }
     }
 }
 
-main(false)
+app.doForcedProgress("Generating NFTs...", 'main(false)');
