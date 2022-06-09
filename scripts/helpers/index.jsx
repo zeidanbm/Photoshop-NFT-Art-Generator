@@ -54,13 +54,13 @@ function getCommonItems(array1, array2) {
 
 /**
  * Check if array contains element
- * @param {array} a
+ * @param {array} arr
  * @param {any} obj
  */
-function checkIfArrayContains(a, obj) {
-    var i = a.length;
+function checkIfArrayContains(arr, obj) {
+    var i = arr.length;
     while (i--) {
-        if (a[i] === obj) {
+        if (arr[i] === obj) {
             return true;
         }
     }

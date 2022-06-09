@@ -2,27 +2,41 @@
 #include "./helpers/index.jsx";
 
 function resetStackedRules() {
-    STACKED_RULES = [];
+    STACKED_RULES = {
+        rejected: [],
+        only: {}
+    };
 }
 
 /**
  * udpate stacked layer rules, returns false if conditions fail
  * @param {string} _layerName
  */
- function checkLayerRules(_layerName) { 
+ function checkLayerRules(_layerName, groupName) { 
     var layerRules = CONDITIONS[_layerName];
+    var onlyFlag = false; // if we detected layer in only, i.e only takes precedence over rejected
 
-    // if current layer is found in the conditions array
-    if(checkIfArrayContains(STACKED_RULES, _layerName)) {
+    // check if the layer is among the only accepted for the current groupName
+    if(STACKED_RULES.only[groupName]) {
+        if(!checkIfArrayContains(STACKED_RULES.only[groupName], _layerName)) {
+            return false;
+        }
+        onlyFlag = true;
+    }
+
+    // if current layer is rejected
+    if(!onlyFlag && checkIfArrayContains(STACKED_RULES.rejected, _layerName)) {
         return false;
     }
 
-    // if no conditions for current layer
-    if (!layerRules) {   
-        return true;   
+    // store conditions for current layer
+    if (layerRules) {   
+        STACKED_RULES.rejected = (layerRules.rejected) ? STACKED_RULES.rejected.concat(layerRules.rejected) : STACKED_RULES.rejected;
+        for (var _g in layerRules.only){
+            STACKED_RULES.only[_g] = STACKED_RULES.only[_g] ? STACKED_RULES.only[_g].concat(layerRules.only[_g]) : layerRules.only[_g]
+        }   
     }
-    STACKED_RULES = STACKED_RULES.concat(layerRules);
-    
+
     return true;  
 }
 
@@ -37,7 +51,7 @@ function pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight
         threshold -= layerWeight;
         if (threshold < 0) {
             // check layer rules
-            var canUseLayer = checkLayerRules(layerName);
+            var canUseLayer = checkLayerRules(layerName, groupName);
             //logData(JSON.stringify({canUseLayer: canUseLayer, stackedRules: STACKED_RULES, layerName: layerName, groupName: groupName}), j + '-' + groupName, 'logs');
             if(canUseLayer) {
                 group.layers[j].visible = true;
@@ -61,13 +75,13 @@ function pickLayerByWeight(group, groupLength, threshold, groupName, totalWeight
     }
 }
 
-var STACKED_RULES = [];
+var STACKED_RULES = {
+    rejected: [],
+    only: {}
+};
 var CONDITIONS = parseJsonFile('/setup/conditions.json');
 var INITAL_GROUPS = parseJsonFile('/setup/groups.json');
 
-// var dlg = new Window('palette')
-// dlg.cancelBtn = dlg.add('button',undefined,'Stop Script')
-// dlg.cancelBtn.onClick = function(){ alert('wtf') }
-// dlg.show();
-
+app.togglePalettes();
 app.doForcedProgress("Generating NFTs...", 'main(true)');
+app.togglePalettes();

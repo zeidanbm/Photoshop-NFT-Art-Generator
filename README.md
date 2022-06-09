@@ -9,7 +9,7 @@
 3. Download and install Docker (Optional, only needed to use the application for browsing/filtering the generated NFTs.)
 
 ## Generating your Collection
-Generate your art collection using Photoshop with either the `generate.jsx` or `generate-with-conditions.jsx` script.
+Generate your art collection using Photoshop with either the `generate.jsx` or `generate-conditions.jsx` script.
 
 ### Using Conditions
 To be able to use the conditions, you will need to create a `conditions.json` file in the setup folder. Copy the contents from `conditions.example` into your `conditions.json` file. 
