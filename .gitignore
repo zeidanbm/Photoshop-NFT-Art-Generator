@@ -112,10 +112,13 @@ final.psd
 final.psb
 conditions.json
 all-conditions.json
+all-conditions_v2.json
 groups.json
 layer-count-agg.json
 all-layers.json
+all-layers_v2.json
 all-groups.json
+all-groups_v2.json
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
