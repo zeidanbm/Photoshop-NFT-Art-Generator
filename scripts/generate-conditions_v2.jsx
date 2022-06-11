@@ -30,8 +30,11 @@ function resetStackedRules() {
     }
 
     // store conditions for current layer
-    if (layerRules) {   
+    if (layerRules.rejected) {   
         STACKED_RULES.rejected = (layerRules.rejected) ? STACKED_RULES.rejected.concat(layerRules.rejected) : STACKED_RULES.rejected;
+    }
+
+    if(layerRules.only) {
         for (var _g in layerRules.only){
             STACKED_RULES.only[_g] = STACKED_RULES.only[_g] ? STACKED_RULES.only[_g].concat(layerRules.only[_g]) : layerRules.only[_g]
         }   
