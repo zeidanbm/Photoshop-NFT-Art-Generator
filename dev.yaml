@@ -1,0 +1,7 @@
+version: '3'
+services:
+  backend-server:
+    working_dir: /app
+    build:
+      context: .
+      dockerfile: dev.Dockerfile

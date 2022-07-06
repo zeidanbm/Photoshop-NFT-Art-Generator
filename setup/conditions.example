@@ -1,22 +1,39 @@
 {
   "T-Low": {
-    "layers":["Bg-Red" , "Eye-Green", "Eye-Pink", "Eye-Yellow", "Eye-Red"],
-    "groups":["Background", "Eye Color"]
+    "rejected": ["Bg-Red" , "Eye-Green", "Eye-Pink", "Eye-Yellow", "Eye-Red"],
+    "only": {
+      "Background": ["Bg-Black"],
+      "Eyeball": ["Eyeball-Green"]
+    }
   },
-  "T-Middle": {
-    "layers":["Bg-Black", "Eye-Yellow", "Eye-Green"],
-    "groups":["Background", "Eye Color"]
-  },
-  "B-Middle": {
-    "layers":["Ir-Small", "Ir-Medium", "Eye-Cyan", "Eye-Purple", "Eye-Red"],
-    "groups":["Iris", "Eye Color"]
+  "T-High": {
+    "rejected": ["Bg-Black" , "Eye-Green"],
+    "only": {
+      "Iris": ["Ir-Medium"],
+      "Eyeball": ["Eyeball-White"]
+    }
   },
   "Ir-Large": {
-    "layers":["Bg-Red", "Eyeball-White"],
-    "groups":["Eyeball", "Background"]
+    "rejected": ["Bg-Red", "Eyeball-White"],
+    "only": {
+      "Background": ["Bg-Purple"],
+      "Eyeball": ["Eyeball-Green"]
+    }
   },
   "Eye-Purple": {
-    "layers":["Eyeball-Red"],
-    "groups":["Eyeball"]
+    "rejected": ["Eyeball-Red"],
+    "only": false
+  },
+  "Eye-Green": {
+    "rejected": false,
+    "only": {
+      "Background": ["Bg-Red", "Bg-Black"]
+    }
+  },
+  "Eye-Red": {
+    "rejected": ["Bg-Purple"],
+    "only": {
+      "Eyeball": ["Eyeball-White"]
+    }
   }
 }

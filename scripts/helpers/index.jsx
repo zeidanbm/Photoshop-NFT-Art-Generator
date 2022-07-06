@@ -107,7 +107,7 @@ function main(canHaveGroups) {
 
     var description = prompt("What is the description for your collection?", "");
 
-    var hasDNA = prompt("Do you want to use a DNA to make sure generated NFTs are unique? (1=>yes, 0=>no)", "0");
+    var hasDNA = prompt("Do you want to use a DNA to make sure generated NFTs are unique? (1=>yes, 0=>no). This option will slow down the generation, advised to be done after generation using dna check utils script.", "0");
     hasDNA = parseInt(hasDNA);
 
     alert(

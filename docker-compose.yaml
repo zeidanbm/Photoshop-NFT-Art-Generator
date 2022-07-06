@@ -4,9 +4,8 @@ services:
     platform: linux/amd64
     container_name: backend-server
     restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile
+    volumes:
+      - ./nft-backend:/app
     ports:
       - "8075:8075"
     links:
@@ -22,15 +21,21 @@ services:
     container_name: mongo-db
     image: mongo
     # environment:
-    #   - MONGO_INITDB_DATABASE=
-    #   - MONGO_INITDB_ROOT_USERNAME=
-    #   - MONGO_INITDB_ROOT_PASSWORD=
+      # - MONGO_INITDB_DATABASE=
+      # - MONGO_INITDB_ROOT_USERNAME=
+      # - MONGODB_ROOT_PASSWORD=
     volumes:
       - ./mongo-db-volume:/data/db
     ports:
       - '27017-27019:27017-27019'
     networks:
       - backend
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 networks:
   backend:
     driver: bridge

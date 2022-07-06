@@ -1,6 +1,6 @@
 # Cyber Genie NFT Generator - Photoshop Scripts & Utilities
 
-## https://thecybergenie.com
+## [The Cyber Genie](https://thecybergenie.com)
 
 ## Initial Setup
 1. Install the latest Photoshop
@@ -43,8 +43,8 @@ Run the filter to remove metadata and images by providing a layer name and count
 Run the clean script to clean the metadata/images and rename all files starting from 1 to N
 `npm run clean`
 
-## Starting the web application
-If you would like to browse through your NFT collection and filter them using a browser, you can run a small application using docker. First, make sure docker is installed and running on your machine. Then simply execute the command `docker-compose up`.
+## web application (comming soon)
+<!-- If you would like to browse through your NFT collection and filter them using a browser, you can run a small application using docker. First, make sure docker is installed and running on your machine. Then simply execute the command `docker-compose -f docker-compose.yaml -f prod.yaml up`.  -->
 
 ## Credits
 Inspired by the [Hashlips ps script](https://github.com/HashLips/hashlips_art_engine_ps_script)
